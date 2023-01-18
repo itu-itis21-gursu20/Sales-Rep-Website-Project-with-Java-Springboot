@@ -31,9 +31,3 @@
 #### H2 DATABASE
 #### JPA REPOSITORY
 #### LOMBOK
-![image](https://user-images.githubusercontent.com/92295749/213197667-5286f0bd-c47a-4a92-ad85-07b69a7ed128.png)
-
-
-
-
-
