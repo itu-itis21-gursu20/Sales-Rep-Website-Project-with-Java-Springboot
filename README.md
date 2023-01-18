@@ -19,4 +19,13 @@
 ### Mobilden / tabletten görüntüleme
 ### Veri silme işlemleri
 ### Redirect kullanımı
+## PROJEDE KULLANILAN YAZILIMLAR
+### FRONTEND
+#### THYMELEAF ENGINE 
+HTML 
+CSS
+BOOTSTRAP
+JAVASCRIPT
+
+
 
