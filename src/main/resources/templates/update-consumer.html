@@ -1,0 +1,91 @@
+<!-- BERKAY GÜRSU - STAJCELL 2022 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>MÜŞTERİ BİLGİLERİNİ GÜNCELLEME | BERKAY GÜRSU</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+</head>
+<!-- CSS PROPERTIES START -->
+<style>
+  body {
+    background-color: white;
+    color: #2855ac;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .card {
+    background-color: #e8e8e8;
+    border: 2px solid #083567;
+    color: #2855ac;
+  }
+
+  .container {
+    margin-left: 97px;
+  }
+
+  h2 {
+    margin-left: 40px;
+  }
+</style>
+<!-- CSS PROPERTIES END -->
+<body>
+<div class="container my-5">
+  <!-- NAVBAR START -->
+  <div class="fixed-top">
+    <ul class="nav nav-pills nav-fill">
+      <img src="" height="80" alt="">
+      <li class="nav-item">
+        <a class="nav-link active" href="/consumers/list"><i class="fa-sharp fa-solid fa-house"></i> Anasayfa</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/login"><i class="fa-solid fa-right-from-bracket"></i><span th:text="${username}"></span> Oturumu Kapat</a>
+      </li>
+    </ul>
+  </div>
+  <!-- NAVBAR END -->
+
+
+  <!-- UPDATE CUSTOMER INFORMATION PART START -->
+  <h2>Müşteri Bilgilerini Güncelle</h2>
+  <div class="card col-md-6">
+    <div class="card-body">
+      <div class="col-md-12">
+        <form action="#" th:action="@{/consumers/update/{id}(id=${consumer.id})}" th:object="${consumer}" method="post">
+          <div class="row">
+            <div class="form-group col-md-8">
+              <label for="name" class="col-form-label">Ad</label> <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="Ad"> <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-8">
+              <label for="surname" class="col-form-label">Soyad</label> <input type="text" th:field="*{surname}" class="form-control" id="surname" placeholder="Soyad"> <span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-8">
+              <label for="phoneNo" class="col-form-label">Telefon No</label> <input type="text" th:field="*{phoneNo}" class="form-control" id="phoneNo" placeholder="Telefon No"> <span th:if="${#fields.hasErrors('phoneNo')}" th:errors="*{phoneNo}" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-8">
+              <label for="address" class="col-form-label">Adres</label> <textarea type="text" th:field="*{address}" class="form-control" id="address" placeholder="Adres"></textarea> <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-8">
+              <input type="submit" class="btn btn-primary" value="Müşteri Bilgilerini Güncelle">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- UPDATE CUSTOMER INFORMATION PART END -->
+</div>
+
+</body>
+
+</html>

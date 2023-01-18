@@ -1,0 +1,138 @@
+<!-- BERKAY GÜRSU - STAJCELL 2022 -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>ÜRÜN BİLGİLERİNİ GÜNCELLEME | BERKAY GÜRSU</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+  <link href="/Content/demo.css" rel="stylesheet" type="text/css" />
+  <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+  </script>
+  <script src="https://unpkg.com/gijgo@1.9.13/js/messages/messages.tr-tr.js" type="text/javascript"></script>
+</head>
+
+<!-- CSS PROPERTIES START -->
+<style>
+    body {
+        background-color: white;
+        color: #2855ac;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .card {
+        background-color: #e8e8e8;
+        border: 2px solid #083567;
+        color: #2855ac;
+    }
+
+  .container {
+    margin-left: 97px;
+  }
+
+  h2 {
+    margin-left: 50px;
+  }
+</style>
+<!-- CSS PROPERTIES END -->
+
+<body>
+<div class="container my-5">
+
+  <!-- NAVBAR START -->
+  <div class="fixed-top">
+    <ul class="nav nav-pills nav-fill">
+      <img src="" height="80" alt="">
+      <li class="nav-item">
+        <a class="nav-link active" href="/consumers/list"><i class="fa-sharp fa-solid fa-house"></i> Anasayfa</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" th:href="@{/consumers/details/{id}(id=${consumerId})}"><i class="fa-solid fa-circle-info"></i> Müşteri Detay Sayfası</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/login"><i class="fa-solid fa-right-from-bracket"></i><span th:text="${username}"></span> Oturumu Kapat</a>
+      </li>
+    </ul>
+  </div>
+  <!-- NAVBAR END -->
+
+
+  <!-- UPDATE CUSTOMER'S PRODUCTS PART START -->
+  <h2>Ürün Bilgilerini Güncelle</h2>
+  <div class="card col-md-6">
+    <div class="card-body">
+      <div class="col-md-12">
+        <form action="#" th:action="@{/products/update/{id}(id=${productToUpdate.id})}" th:object="${productToUpdate}" method="post">
+          <div class="row">
+
+
+            <div class="form-group col-md-12" >
+              <select class="form-control" id="testOrder" name="testOrder" th:field="${productToUpdate.productCatalog}">
+                <option value="">Ürünün adını, tipini ve fiyatını seçiniz.</option>
+                <option th:each="test : ${productCatalogList}"
+                        th:value="${test.id}"
+                        th:text="${test.name} + ' : ' + ${test.type} + ' : ' + ${test.price}" ></option>
+              </select>
+            </div>
+
+
+            <div class="form-group col-md-8">
+              <label for="number" class="col-form-label">Ürün Adedi</label>
+              <input type="text" th:field="*{number}" class="form-control" id="number" placeholder="Ürün Adedi">
+              <span th:if="${#fields.hasErrors('number')}" th:errors="*{number}" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-8">
+              <label for="datepicker" class="col-form-label">Görüşme Tarihi</label>
+              <input type="text" id="datepicker" th:field="*{buyDate}" class="form-control" placeholder="Görüşme Tarihi">
+              <span th:if="${#fields.hasErrors('buyDate')}" th:errors="*{buyDate}" class="text-danger"></span>
+            </div>
+
+            <!-- DATEPICKER USING BOOSTRAP AND JAVASCRIPT START -->
+            <script type="text/javascript">
+              var datepicker, config;
+              config = {
+                locale: 'tr-tr',
+                uiLibrary: 'bootstrap4',
+                format: 'dd/mm/yyyy',
+                firstDay: 1
+              };
+              $(document).ready(function () {
+                datepicker = $('#datepicker').datepicker(config);
+                $('#ddlLanguage').on('change', function () {
+                  var newLang = $(this).val();
+                  config.locale = newLang;
+                  datepicker.destroy();
+                  datepicker = $('#datepicker').datepicker(config);
+                });
+              });
+            </script>
+            <!-- DATEPICKER USING BOOSTRAP AND JAVASCRIPT END -->
+
+            <div class="form-group col-md-8">
+              <label for="address" class="col-form-label">Kurulum Adresi</label>
+              <textarea type="text" th:field="*{address}" class="form-control" id="address" placeholder="Kurulum Adresi"></textarea>
+              <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger"></span>
+            </div>
+
+            <div class="form-group col-md-8">
+              <input type="submit" class="btn btn-primary" value="Ürün Bilgilerini Güncelle">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- UPDATE CUSTOMER'S PRODUCTS PART END -->
+</div>
+</body>
+
+</html>

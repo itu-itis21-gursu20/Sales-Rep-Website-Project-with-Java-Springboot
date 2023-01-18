@@ -1,0 +1,257 @@
+<!-- BERKAY GÜRSU - STAJCELL 2022 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Müşteri Detay Sayfası | BERKAY GÜRSU</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+  <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+
+</head>
+<!-- CSS PROPERTIES START -->
+<style>
+  body {
+    background-color: white;
+    color: #2855ac;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .card {
+    background-color: #e8e8e8;
+    border: 2px solid #083567;
+    color: #2855ac;
+    margin-left: 23px;
+  }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  h1 {
+    max-width: 896px;
+    text-align: center;
+    background-color: #697ff1;
+    margin-left: 17px;
+    color: white;
+    padding: 5px;
+  }
+
+  h2 {
+    padding: 10px;
+    text-decoration: underline;
+  }
+
+  table {
+    text-align: center;
+  }
+
+  a i {
+    color: white;
+  }
+
+  .button {
+    cursor: pointer;
+    color: white;
+    background-color: #2855ac;
+    border-radius: 5px;
+  }
+</style>
+<!-- CSS PROPERTIES END -->
+<body>
+
+<div class="container my-5">
+
+  <!-- NAVBAR START -->
+  <div class="fixed-top">
+    <ul class="nav nav-pills nav-fill">
+      <img src="" height="80" alt="">
+      <li class="nav-item">
+        <a class="nav-link active" href="/consumers/list"><i class="fa-sharp fa-solid fa-house"></i> Anasayfa</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#info"><i class="fa-solid fa-user"></i> Müşteri Bilgisi</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#prod"><i class="fa-solid fa-mobile"></i> Ürünler</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="#meet"><i class="fa-solid fa-handshake"></i> Görüşmeler</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/login"><i class="fa-solid fa-right-from-bracket"></i><span th:text="${username}"></span> Oturumu Kapat</a>
+      </li>
+    </ul>
+  </div>
+  <!-- NAVBAR END -->
+
+
+  <div class="container my-5">
+    <!-- CUSTOMER INFORMATION START -->
+    <div class="card my-2 col-md-12">
+      <div class="card-body">
+        <div th:switch="${consumer}" class="container my-3">
+          <p id="info"></p><br>
+          <h2>Müşterinin Kişisel Bilgileri</h2>
+          <div class="col-md-12">
+            <h5 th:case="null">Henüz Müşteri Yok!</h5>
+            <div th:case="*">
+              <table class="table table-striped table-responsive-md">
+                <thead>
+                <tr>
+                  <th>Ad</th>
+                  <th>Soyad</th>
+                  <th>Telefon No</th>
+                  <th>Adres</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="consumer : ${consumer}">
+                  <td th:text="${consumer.name}"></td>
+                  <td th:text="${consumer.surname}"></td>
+                  <td th:text="${consumer.phoneNo}"></td>
+                  <td th:text="${consumer.address}"></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- CUSTOMER INFORMATION END -->
+
+
+    <!-- CUSTOMER'S PRODUCTS' INFORMATION START -->
+    <div class="card my-2 col-md-12">
+      <div class="card-body">
+        <div th:switch="${productFilterList}" class="container my-5">
+          <p id="prod"></p><br>
+          <div class="head">
+            <h2>Müşterinin Sahip Olduğu Ürünler</h2>
+            <p class="my-3">
+              <a th:href="@{/products/signup/{id}(id=${consumer.id})}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Ürün Ekle</a>
+            </p>
+          </div>
+          <div class="col-md-12">
+            <h5 th:case="null">Henüz Ürün Yok!</h5>
+            <div th:case="*">
+
+              <!-- PRODUCT FILTER PART START -->
+              <div>
+                <form th:action="@{/consumers/details/{id}(id=${consumer.id})}">
+                  Filter :
+                  <input type="text" name="pkeyword" th:value="${pkeyword}">
+                  &nbsp;
+                  <input class="button" type="submit" value="Search">
+                  &nbsp;
+                  <input class="button" type="button" value="Clear"> <!-- clear çalışmıyor-->
+                </form>
+              </div>
+              <!-- PRODUCT FILTER PART END -->
+
+              <table class="table table-striped table-responsive-md">
+                <thead>
+                <tr>
+                  <th>Ürün Adı</th>
+                  <th>Ürün Tipi</th>
+                  <th>Ücret</th>
+                  <th>Ürün Adedi</th>
+                  <th>Satın Alma Tarihi</th>
+                  <th>Kurulum Adresi</th>
+                  <th>Düzenle</th>
+                  <th>Sil</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${productFilterList}">
+                  <td th:text="${product.productCatalog.name}"></td>
+                  <td th:text="${product.productCatalog.type}"></td>
+                    <td th:text="${product.productCatalog.price} + ' ₺'"></td>
+                  <td th:text="${product.number}"></td>
+                  <td th:text="${#dates.format(product.buyDate, 'dd/MM/yyyy')}"></td>
+                  <td th:text="${product.address}"></td>
+                  <td><a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                  <td><a th:href="@{/products/delete/{id}(id=${product.id})}" class="btn btn-primary"><i class="fa-solid fa-trash"></i></a></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- CUSTOMER'S PRODUCTS' INFORMATION END -->
+
+    <!-- CUSTOMER'S MEETINGS' INFORMATION START -->
+    <div class="card my-2 col-md-12">
+      <div class="card-body">
+        <div th:switch="${meetingFilterList}" class="container my-5">
+          <p id="meet"></p><br>
+          <div class="head">
+            <h2>Müşterinin Görüşmeleri</h2>
+            <p class="my-3">
+              <a th:href="@{/meetings/signup/{id}(id=${consumer.id})}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Görüşme Ekle</a>
+            </p>
+          </div>
+          <div class="col-md-12">
+            <h5 th:case="null">Henüz Görüşme Yok!</h5>
+            <div th:case="*">
+
+              <!-- MEETING FILTER PART START -->
+              <div>
+                <form th:action="@{/consumers/details/{id}(id=${consumer.id})}">
+                  Filter :
+                  <input type="text" name="mkeyword" th:value="${mkeyword}">
+                  &nbsp;
+                  <input class="button" type="submit" value="Search">
+                  &nbsp;
+                  <input class="button" type="button" value="Clear">
+                </form>
+              </div>
+              <!-- MEETING FILTER PART END -->
+
+
+              <table class="table table-striped table-responsive-md">
+                <thead>
+                <tr>
+                  <th>Görüşme Adı</th>
+                  <th>Görüşme Tarihi</th>
+                  <th>Görüşme Tipi</th>
+                  <th>Görüşme Adresi</th>
+                  <th>Düzenle</th>
+                  <th>Sil</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="meeting : ${meetingFilterList}">
+                  <td th:text="${meeting.name}"></td>
+                  <td th:text="${#dates.format(meeting.date, 'dd/MM/yyyy')}"></td>
+                  <td th:text="${meeting.type}"></td>
+                  <td th:text="${meeting.address}"></td>
+                  <td><a th:href="@{/meetings/edit/{id}(id=${meeting.id})}" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                  <td><a th:href="@{/meetings/delete/{id}(id=${meeting.id})}" class="btn btn-primary"><i class="fa-solid fa-trash"></i></a></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--<script type="text/javascript">-->
+<!--  function clearFilter(id) {-->
+<!--    window.location = '{id}';-->
+<!--  }-->
+<!--</script>-->
+
+</body>
+</html>

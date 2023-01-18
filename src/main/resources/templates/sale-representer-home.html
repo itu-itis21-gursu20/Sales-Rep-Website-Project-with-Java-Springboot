@@ -1,0 +1,200 @@
+<!-- BERKAY GÜRSU - STAJCELL 2022 -->
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>SATIŞ TEMSİLCİSİ ANASAYFASI | BERKAY GÜRSU</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+  <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+
+<!-- CSS PROPERTIES START -->
+<style>
+  body {
+    background-color: white;
+    color: #2855ac;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .card {
+    background-color: #e8e8e8;
+    border: 2px solid #083567;
+    color: #2855ac;
+    margin-left: 37px;
+  }
+
+  h1 {
+    text-align: center;
+    background-color: #697ff1;
+    padding: 5px;
+  }
+
+  h2 {
+    text-decoration: underline;
+  }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .table {
+    text-align: center;
+  }
+
+  table i{
+    color: white;
+  }
+
+  .detail {
+    color: #2855ac;
+  }
+
+  .button {
+    cursor: pointer;
+    color: white;
+    background-color: #2855ac;
+    border-radius: 5px;
+  }
+</style>
+<!-- CSS PROPERTIES END -->
+
+<body>
+<div class="container my-5">
+
+  <!-- NAVBAR START -->
+    <div class="fixed-top">
+      <ul class="nav nav-pills nav-fill">
+        <img src="" height="80" alt="">
+        <li class="nav-item">
+          <a class="nav-link active" href="/consumers/list"><i class="fa-sharp fa-solid fa-house"></i> Anasayfa</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#con"><i class="fa-solid fa-users"></i> Müşterilerim</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#meet"><i class="fa-solid fa-handshake"></i> Görüşmelerim</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/login"><i class="fa-solid fa-right-from-bracket"></i> <span th:text="${username}"></span> Oturumu Kapat</a>
+        </li>
+      </ul>
+    </div>
+  <!-- NAVBAR END -->
+
+  <div class="card my-2 col-md-11">
+    <div class="card-body">
+       <div th:switch="${consumerFilterList}" class="container my-5">
+         <p id="con"></p><br>
+            <div class="head">
+              <h2>Müşterilerim</h2>
+              <p class="my-3">
+                <a href="/consumers/signup" class="btn btn-primary"><i class="fas fa-user-plus ml-2"></i> Müşteri Ekle</a>
+              </p>
+            </div>
+        <div class="col-md-12">
+          <h5 th:case="null">Henüz Müşteri Yok!</h5>
+          <div th:case="*">
+
+            <!-- CUSTOMER LIST FILTER START -->
+            <div>
+              <form th:action="@{/consumers/list}">
+                Filter :
+                <input type="text" name="name" th:value="${name}">
+                &nbsp;
+                <input class="button" type="submit" value="Search">
+                &nbsp;
+                <input class="button" type="button" value="Clear" onclick="clearFilter()">
+              </form>
+            </div>
+            <!-- CUSTOMER LIST FILTER END -->
+
+              <table class="table table-striped table-responsive-md">
+                <thead>
+                <tr>
+                  <th></th>
+                  <th>Ad</th>
+                  <th>Soyad</th>
+                  <th>Telefon No</th>
+                  <th>Adres</th>
+                  <th>Düzenle</th>
+                  <th>Sil</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="consumer : ${consumerFilterList}">
+                    <td class="detail"><a th:href="@{/consumers/details/{id}(id=${consumer.id})}">Detay Gör</a></td>
+                    <td th:text="${consumer.name}"></td>
+                    <td th:text="${consumer.surname}"></td>
+                    <td th:text="${consumer.phoneNo}"></td>
+                    <td th:text="${consumer.address}"></td>
+                    <td><a th:href="@{/consumers/edit/{id}(id=${consumer.id})}" class="btn btn-primary"><i class="fas fa-user-edit ml-2 "></i></a></td>
+                    <td><a th:href="@{/consumers/delete/{id}(id=${consumer.id})}" class="btn btn-primary"><i class="fas fa-user-times ml-2 "></i></a></td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- ALL MEETINGS LIST START -->
+  <div class="card my-2 col-md-11">
+    <div class="card-body">
+      <div th:switch="${meetingList}" class="container my-5">
+        <p id="meet"></p><br><br>
+        <h2>Görüşmelerim</h2>
+        <div class="col-md-12">
+          <h5 th:case="null">Henüz Görüşme Yok!</h5>
+          <div th:case="*">
+              <table class="table table-striped table-responsive-md">
+                <thead>
+                <tr>
+                  <th>Müşteri Adı</th>
+                  <th>Müşteri Soyadı</th>
+                  <th>Görüşme Adı</th>
+                  <th>Görüşme Tarihi</th>
+                  <th>Görüşme Tipi</th>
+                  <th>Görüşme Adresi</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="meeting : ${meetingList}">
+                  <td th:text="${meeting.consumer.name}"></td>
+                  <td th:text="${meeting.consumer.surname}"></td>
+                  <td th:text="${meeting.name}"></td>
+                  <td th:text="${#dates.format(meeting.date, 'dd/MM/yyyy')}"></td>
+                  <td th:text="${meeting.type}"></td>
+                  <td th:text="${meeting.address}"></td>
+                </tr>
+                </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ALL MEETINGS LIST END -->
+</div>
+
+<script type="text/javascript">
+   function clearFilter() {
+     window.location = 'list';
+   }
+</script>
+
+</body>
+
+</html>
